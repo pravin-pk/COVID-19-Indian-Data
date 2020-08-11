@@ -7,6 +7,14 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
+def caps(name):
+    if len(name.split())==1:
+        return name.capitalize()
+    else:
+        sep=[word.capitalize() for word in name.split()]
+        final=sep[0]+' '+sep[1]
+        return final
+
 def State():
     url='https://api.covid19india.org/data.json'
     print('Retrieving  data...wait a moment')
@@ -23,7 +31,7 @@ def State():
 
 
     n=input('\n\nEnter the states from above list to get the results:')
-    n=n.capitalize()
+    n=caps(n)
 
     state_index=place.index(n)
 
@@ -48,9 +56,7 @@ def district(n):
         districts.append(i)
         
     m=input('\n\nEnter the Districts from above list to get the results:')
-    m=m.split()
-    sep=[name.capitalize() for name in m] 
-    m=sep[0]+' '+sep[1]
+    m=caps(m)
 
     print('Confirmed cases:', js[n]['districtData'][m]['confirmed'])
     print('Active cases:', js[n]['districtData'][m]['active'])
