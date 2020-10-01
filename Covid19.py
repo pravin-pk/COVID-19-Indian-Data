@@ -14,7 +14,8 @@ def caps(name):
         sep=[word.capitalize() for word in name.split()]
         final=sep[0]+' '+sep[1]
         return final
-
+    
+# UDF to get data from URL
 def State():
     url='https://api.covid19india.org/data.json'
     print('Retrieving  data...wait a moment')
@@ -42,7 +43,7 @@ def State():
     update=js['statewise'][state_index]['lastupdatedtime']
     
     return n, confirmed, active, recovered, deaths, update
-
+# UDF to get data from URL
 def district(n):
     url='https://api.covid19india.org/state_district_wise.json'
     print('Retrieving  data...wait a moment')
