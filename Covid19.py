@@ -14,8 +14,7 @@ def caps(name):
         sep=[word.capitalize() for word in name.split()]
         final=sep[0]+' '+sep[1]
         return final
-    
-# UDF to get data from URL
+
 def State():
     url='https://api.covid19india.org/data.json'
     print('Retrieving  data...wait a moment')
@@ -30,11 +29,17 @@ def State():
         place.append(state)
         print(state)
 
+    def inputs():
+      n=input('\n\nEnter the states from above list to get the results:')
+      n=caps(n)
+      state_index=place.index(n)
+      return state_index,n
 
-    n=input('\n\nEnter the states from above list to get the results:')
-    n=caps(n)
-
-    state_index=place.index(n)
+    try:
+      state_index,n=inputs();
+    except ValueError:
+      print("Please check the spelling of states from above list")
+      state_index,n=inputs()
 
     confirmed=js['statewise'][state_index]['confirmed']
     active=js['statewise'][state_index]['active']
@@ -43,7 +48,7 @@ def State():
     update=js['statewise'][state_index]['lastupdatedtime']
     
     return n, confirmed, active, recovered, deaths, update
-# UDF to get data from URL
+
 def district(n):
     url='https://api.covid19india.org/state_district_wise.json'
     print('Retrieving  data...wait a moment')
@@ -55,16 +60,23 @@ def district(n):
     for i in js[n]['districtData']:
         print(i)
         districts.append(i)
-        
-    m=input('\n\nEnter the Districts from above list to get the results:')
-    m=caps(m)
 
-    print('Confirmed cases:', js[n]['districtData'][m]['confirmed'])
-    print('Active cases:', js[n]['districtData'][m]['active'])
-    print('Recovered:', js[n]['districtData'][m]['recovered'])
-    print('Death:', js[n]['districtData'][m]['deceased'])
-    print('\n\n\t Refresh the page to check for another state and district \n\t\t\t THANK YOU')
+    def dist_inputs_and_result():
+      m=input('\n\nEnter the Districts from above list to get the results:')
+      m=caps(m)
+      print('Confirmed cases:', js[n]['districtData'][m]['confirmed'])
+      print('Active cases:', js[n]['districtData'][m]['active'])
+      print('Recovered:', js[n]['districtData'][m]['recovered'])
+      print('Death:', js[n]['districtData'][m]['deceased'])
+      print('\n\n\t Refresh the page to check for another state and district \n\t\t\t\t\t THANK YOU')
+      return None
     
+    try:
+      dist_inputs_and_result()
+    except KeyError:
+      print("Please check the spelling of Districts from the above list")
+      dist_inputs_and_result()
+
     return None
 
 input("Press enter to get COVID 19 results") 
@@ -76,7 +88,7 @@ print('Deaths:', deaths)
 print('Last Updated time:', update)
 
 
-confirmation=input("Do you want to Check the district Wise results of "+n+" state  [y/n]:\n")
+confirmation=input("\n\nDo you want to Check the district Wise results of "+n+" state  [y/n]:\n")
 
     
 
@@ -84,5 +96,3 @@ if confirmation=='y':
     district(n)
 else:
     print("\t\t THANK YOU")
-
-
